@@ -2,7 +2,6 @@ import json
 from web3 import Web3
 from web3.middleware import ExtraDataToPOAMiddleware
 from web3.providers.rpc import HTTPProvider
-from web3.middleware import geth_poa_middleware
 
 '''
 If you use one of the suggested infrastructure providers, the url will be of the form
@@ -25,14 +24,11 @@ def connect_with_middleware(contract_json):
         address = d['address']
         abi = d['abi']
 
-    # First section similar to connect_to_eth but with BNB Chain (Binance Smart Chain) URL
-    bnb_url = "https://bsc-testnet.drpc.org"  # FILL THIS IN with BNB provider URL
+    bnb_url = "https://bsc-testnet.drpc.org"
     w3 = Web3(HTTPProvider(bnb_url))
     assert w3.is_connected(), f"Failed to connect to provider at {bnb_url}"
 
-    # Second section injecting middleware and creating contract object
-    # Binance Smart Chain (BSC) uses Proof-of-Authority consensus, so middleware injection is necessary
-    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    w3.middleware_onion.inject(ExtraDataToPOAMiddleware(), layer=0)
 
     contract = w3.eth.contract(address=Web3.to_checksum_address(address), abi=abi)
 
