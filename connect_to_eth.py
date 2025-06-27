@@ -25,7 +25,7 @@ def connect_with_middleware(contract_json):
         abi = d['abi']
 
     # First section similar to connect_to_eth but with BNB Chain (Binance Smart Chain) URL
-    bnb_url = ""  # FILL THIS IN with BNB provider URL
+    bnb_url = "https://ethereum-mainnet.core.chainstack.com/92b8d8e613baea1750dc7435f17ceea3"  # FILL THIS IN with BNB provider URL
     w3 = Web3(HTTPProvider(bnb_url))
     assert w3.is_connected(), f"Failed to connect to provider at {bnb_url}"
 
